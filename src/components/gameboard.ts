@@ -28,13 +28,26 @@ class GameBoard {
     const shipId = ShipPositionName(shipName.toLowerCase())
 
     if (axis === "X" || axis === "x") {
-      const startCoord: Coordinate = {
-        x: coord.x,
-        y: coord.y - Math.floor(shipLength / 2),
-      }
-      const endCoord: Coordinate = {
-        x: coord.x,
-        y: coord.y + Math.floor(shipLength / 2),
+      let startCoord: Coordinate
+      let endCoord: Coordinate
+      if (shipLength > 2) {
+        startCoord = {
+          x: coord.x,
+          y: coord.y - Math.floor(shipLength / 2),
+        }
+        endCoord = {
+          x: coord.x,
+          y: coord.y + Math.floor(shipLength / 2),
+        }
+      } else {
+        startCoord = {
+          x: coord.x,
+          y: coord.y,
+        }
+        endCoord = {
+          x: coord.x,
+          y: coord.y + 1,
+        }
       }
 
       if (startCoord.y < 0 || endCoord.y > 9) {
@@ -51,13 +64,26 @@ class GameBoard {
         this.game[startCoord.x][i] = shipId
       }
     } else {
-      const startCoord: Coordinate = {
-        x: coord.x - Math.floor(shipLength / 2),
-        y: coord.y,
-      }
-      const endCoord: Coordinate = {
-        x: coord.x + Math.floor(shipLength / 2),
-        y: coord.y,
+      let startCoord: Coordinate
+      let endCoord: Coordinate
+      if (shipLength > 2) {
+        startCoord = {
+          x: coord.x - Math.floor(shipLength / 2),
+          y: coord.y,
+        }
+        endCoord = {
+          x: coord.x + Math.floor(shipLength / 2),
+          y: coord.y,
+        }
+      } else {
+        startCoord = {
+          x: coord.x,
+          y: coord.y,
+        }
+        endCoord = {
+          x: coord.x + 1,
+          y: coord.y,
+        }
       }
 
       if (startCoord.x < 0 || endCoord.x > 9) {
@@ -101,6 +127,17 @@ class GameBoard {
     } else {
       this.game[coord.x][coord.y] = -1 // Mark as missed
       return "miss"
+    }
+  }
+  get SunkedShips(): Array<Ship> {
+    return this.shankedShips
+  }
+  get gameBox() {
+    return this.game
+  }
+  isLost() {
+    if (this.shankedShips.length >= 5) {
+      return true
     }
   }
 }

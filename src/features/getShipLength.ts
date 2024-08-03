@@ -7,7 +7,10 @@ function getShipLength(shipName: string): number {
     case "battleship":
       shipLength = 4
       break
-    case "destroyer" || "submarine":
+    case "destroyer":
+      shipLength = 3
+      break
+    case "submarine":
       shipLength = 3
       break
     case "patrol":
