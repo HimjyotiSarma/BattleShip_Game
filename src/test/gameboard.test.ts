@@ -1,7 +1,7 @@
 import GameBoard from "../components/gameboard"
-import Ship from "../components/ship"
-import ShipPositionName from "../features/ShipPositionName"
-import getShipLength from "../features/getShipLength"
+// import Ship from "../components/ship"
+// import ShipPositionName from "../features/ShipPositionName"
+// import getShipLength from "../features/getShipLength"
 
 describe("Game Board Test Cases", () => {
   beforeAll(() => {

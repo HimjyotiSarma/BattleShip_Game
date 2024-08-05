@@ -12,8 +12,8 @@ class GameBoard {
   shankedShips: Array<Ship>
   Ships: Map<string, Ship>
 
-  constructor() {
-    this.game = Array.from({ length: 10 }, () => Array(10).fill(0))
+  constructor(game = Array.from({ length: 10 }, () => Array(10).fill(0))) {
+    this.game = game
     this.shankedShips = []
     this.Ships = new Map()
   }
@@ -139,6 +139,9 @@ class GameBoard {
     if (this.shankedShips.length >= 5) {
       return true
     }
+  }
+  isAllShipPlaced(): boolean {
+    return this.Ships.size == 5
   }
 }
 
