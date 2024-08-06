@@ -112,6 +112,7 @@ class GameBoard {
   }
 
   receiveAttack(coord: Coordinate) {
+    console.log("Recieved Attack in Cell")
     const gridPosition = this.game[coord.x][coord.y]
 
     if (typeof gridPosition === "string" && this.Ships.has(gridPosition)) {

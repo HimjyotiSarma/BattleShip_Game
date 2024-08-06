@@ -1,0 +1,53 @@
+@import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&display=swap");
+
+body {
+  font-family: "Orbitron", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  height: 95vh;
+  overflow-x: hidden;
+}
+header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 75px;
+  max-height: 20vh;
+}
+.game_area {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  height: 100%;
+  width: 100%;
+}
+.box_area {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 25px;
+  padding: 20px;
+}
+.board {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  gap: 0;
+  width: calc(85% - 20px);
+  height: calc(85% - 20px);
+}
+.box_area .board .cell_common {
+  /* height: 20px;
+  max-height: 35px;
+  width: 20px;
+  max-width: 35px; */
+  border: 1px solid black;
+}
+@media only screen and (max-width: 600px) {
+  .game_area {
+    grid-template-columns: repeat(1, 1fr);
+  }
+  .board {
+    width: 100%;
+    height: 100%;
+  }
+}

@@ -19,6 +19,11 @@ class Player {
   isAllShipPlaced(): boolean {
     return this.PlayerBoard.isAllShipPlaced()
   }
+
+  autoShipPlacement() {
+    // Write Logic of Auto Ship Placement in Random Place
+    return undefined
+  }
   get gameBox() {
     return this.PlayerBoard.gameBox
   }
