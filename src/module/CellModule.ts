@@ -32,7 +32,7 @@ function Cell(x: number, y: number, value: cellValue, board: GameBoard) {
     let coord: Coord = { x: x, y: y }
     board.receiveAttack(coord)
     console.log(`Cell clicked at X_Coord ${coord.x} and Y_Coord ${coord.y}`)
-
+    console.log(board.gameBox)
     // Update cell appearance after the attack
     const newValue = board.game[x][y]
     CellSection.className = "cell_common" // Reset class list
