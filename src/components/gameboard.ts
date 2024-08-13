@@ -23,75 +23,43 @@ class GameBoard {
     coord: Coordinate,
     axis: "X" | "x" | "Y" | "y",
   ): Coordinate[] {
+    const { startCoord, endCoord } = this.calculateCoords(
+      coord,
+      getShipLength(shipName.toLowerCase()),
+      axis,
+    )
+
+    this.validatePlacement(startCoord, endCoord)
     const shipLength: number = getShipLength(shipName.toLowerCase())
-    const shipPosition: Coordinate[] = []
+    const shipPosition = this.generateShipPosition(startCoord, endCoord)
     const shipId = ShipPositionName(shipName.toLowerCase())
 
-    let startCoord: Coordinate
-    let endCoord: Coordinate
+    shipPosition.forEach(({ x, y }) => {
+      this.game[x][y] = shipId
+    })
 
-    if (axis === "X" || axis === "x") {
-      startCoord = {
-        x: coord.x,
-        y: coord.y - Math.floor(shipLength / 2),
-      }
-      endCoord = {
-        x: coord.x,
-        y: coord.y + Math.ceil(shipLength / 2) - 1,
-      }
-
-      if (startCoord.y < 0 || endCoord.y > 9) {
-        throw new Error("The Coordinate Placement is not possible")
-      }
-
-      for (let i = startCoord.y; i <= endCoord.y; i++) {
-        if (typeof this.game[coord.x][i] === "string") {
-          throw new Error(
-            "The Coordinate Placement overlaps with an existing ship",
-          )
-        }
-        shipPosition.push({ x: coord.x, y: i })
-      }
-
-      for (let i = startCoord.y; i <= endCoord.y; i++) {
-        this.game[coord.x][i] = shipId
-      }
-    } else {
-      startCoord = {
-        x: coord.x - Math.floor(shipLength / 2),
-        y: coord.y,
-      }
-      endCoord = {
-        x: coord.x + Math.ceil(shipLength / 2) - 1,
-        y: coord.y,
-      }
-
-      if (startCoord.x < 0 || endCoord.x > 9) {
-        throw new Error("The Coordinate Placement is not possible")
-      }
-
-      for (let i = startCoord.x; i <= endCoord.x; i++) {
-        if (typeof this.game[i][coord.y] === "string") {
-          throw new Error(
-            "The Coordinate Placement overlaps with an existing ship",
-          )
-        }
-        shipPosition.push({ x: i, y: coord.y })
-      }
-
-      for (let i = startCoord.x; i <= endCoord.x; i++) {
-        this.game[i][coord.y] = shipId
-      }
-    }
-
-    const newShip = new Ship(shipLength as 5 | 4 | 3 | 2)
-    this.Ships.set(shipId, newShip)
+    this.Ships.set(shipId, new Ship(shipLength as 5 | 4 | 3 | 2))
 
     return shipPosition
   }
 
+  getCurrentShipPos(
+    shipName: string,
+    coord: Coordinate,
+    axis: "X" | "x" | "Y" | "y",
+  ): Coordinate[] {
+    const { startCoord, endCoord } = this.calculateCoords(
+      coord,
+      getShipLength(shipName.toLowerCase()),
+      axis,
+    )
+
+    this.validatePlacement(startCoord, endCoord)
+
+    return this.generateShipPosition(startCoord, endCoord)
+  }
+
   receiveAttack(coord: Coordinate) {
-    console.log("Received Attack in Cell")
     const gridPosition = this.game[coord.x][coord.y]
 
     if (typeof gridPosition === "string" && this.Ships.has(gridPosition)) {
@@ -104,12 +72,77 @@ class GameBoard {
         }
         return "hit"
       }
-    } else if (gridPosition == 1) {
-      return
-    } else {
+    } else if (gridPosition !== 1) {
       this.game[coord.x][coord.y] = -1 // Mark as missed
       return "miss"
     }
+  }
+
+  calculateCoords(
+    coord: Coordinate,
+    shipLength: number,
+    axis: "X" | "x" | "Y" | "y",
+  ) {
+    let startCoord: Coordinate
+    let endCoord: Coordinate
+
+    if (axis === "X" || axis === "x") {
+      startCoord = {
+        x: coord.x,
+        y: coord.y - Math.floor(shipLength / 2),
+      }
+      endCoord = {
+        x: coord.x,
+        y: coord.y + Math.ceil(shipLength / 2) - 1,
+      }
+    } else {
+      startCoord = {
+        x: coord.x - Math.floor(shipLength / 2),
+        y: coord.y,
+      }
+      endCoord = {
+        x: coord.x + Math.ceil(shipLength / 2) - 1,
+        y: coord.y,
+      }
+    }
+
+    return { startCoord, endCoord }
+  }
+
+  validatePlacement(startCoord: Coordinate, endCoord: Coordinate) {
+    if (
+      startCoord.x < 0 ||
+      startCoord.y < 0 ||
+      endCoord.x > 9 ||
+      endCoord.y > 9
+    ) {
+      throw new Error("The Coordinate Placement is not possible")
+    }
+
+    for (let i = startCoord.x; i <= endCoord.x; i++) {
+      for (let j = startCoord.y; j <= endCoord.y; j++) {
+        if (typeof this.game[i][j] === "string") {
+          throw new Error(
+            "The Coordinate Placement overlaps with an existing ship",
+          )
+        }
+      }
+    }
+  }
+
+  generateShipPosition(
+    startCoord: Coordinate,
+    endCoord: Coordinate,
+  ): Coordinate[] {
+    const shipPosition: Coordinate[] = []
+
+    for (let i = startCoord.x; i <= endCoord.x; i++) {
+      for (let j = startCoord.y; j <= endCoord.y; j++) {
+        shipPosition.push({ x: i, y: j })
+      }
+    }
+
+    return shipPosition
   }
 
   get SunkedShips(): Array<Ship> {
@@ -125,7 +158,7 @@ class GameBoard {
   }
 
   isAllShipPlaced(): boolean {
-    return this.Ships.size == 5
+    return this.Ships.size === 5
   }
 }
 

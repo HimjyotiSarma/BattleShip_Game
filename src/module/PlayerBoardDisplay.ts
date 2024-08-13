@@ -1,5 +1,4 @@
 import Player from "../components/Player"
-import GameBoard from "../components/gameboard"
 import Cell from "./CellModule"
 
 type PlayerConstructor = Player
@@ -15,15 +14,11 @@ function PlayerBoardDisplay(
     let OuterBoard = document.createElement("div")
     OuterBoard.className = "board"
     OuterBoard.setAttribute("data-player-type", playerType)
+
     for (let x = 0; x < PlayerConstructor.gameBox.length; x++) {
       for (let y = 0; y < PlayerConstructor.gameBox[x].length; y++) {
         OuterBoard.append(
-          Cell(
-            x,
-            y,
-            PlayerConstructor.gameBox[x][y],
-            PlayerConstructor.PlayerBoard,
-          ),
+          Cell(x, y, PlayerConstructor.gameBox[x][y], PlayerConstructor),
         )
       }
     }
@@ -42,12 +37,7 @@ function PlayerBoardDisplay(
       for (let x = 0; x < gameBox.length; x++) {
         for (let y = 0; y < gameBox[x].length; y++) {
           getOuterBoard.append(
-            Cell(
-              x,
-              y,
-              PlayerConstructor.gameBox[x][y],
-              PlayerConstructor.PlayerBoard,
-            ),
+            Cell(x, y, PlayerConstructor.gameBox[x][y], PlayerConstructor),
           )
         }
       }

@@ -22,7 +22,7 @@ class Player {
     return this.PlayerBoard.isAllShipPlaced()
   }
 
-  autoShipPlacement(allShipsArr: Array<string> = allShips) {
+  autoShipPlacement(allShipsArr: Array<string> = [...allShips]) {
     if (allShipsArr.length === 0 || this.PlayerBoard.isAllShipPlaced()) {
       return
     }
@@ -61,9 +61,30 @@ class Player {
     placeRandomShip()
     this.autoShipPlacement(allShipsArr)
   }
+  placeShip(shipName: string, coord: Coord, axis: "X" | "x" | "Y" | "y") {
+    if (!this.PlayerBoard.isAllShipPlaced()) {
+      return this.PlayerBoard.placeShip(shipName, coord, axis)
+    } else {
+      console.log("All ships have been placed.")
+      document.dispatchEvent(new CustomEvent("shipsPlaced"))
+      throw new Error("All Ships is Placed. Please move to the game scenerio")
+    }
+  }
 
   get gameBox() {
     return this.PlayerBoard.gameBox
+  }
+  isGameStarted(): boolean {
+    if (this.PlayerBoard.isAllShipPlaced()) {
+      return true
+    }
+    return false
+  }
+  isGameBoxEmpty(): boolean {
+    if (this.PlayerBoard.Ships.size >= 1) {
+      return false
+    }
+    return true
   }
 }
 
