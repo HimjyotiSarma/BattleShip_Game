@@ -160,6 +160,10 @@ class GameBoard {
   isAllShipPlaced(): boolean {
     return this.Ships.size === 5
   }
+  isShipPlaced(shipName: string) {
+    const shipId = ShipPositionName(shipName.toLowerCase()) // Generate the key used in the Ships map
+    return this.Ships.has(shipId)
+  }
 }
 
 export default GameBoard

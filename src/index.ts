@@ -5,6 +5,7 @@ import axisState from "./features/currentAxis"
 import "./style/index.css"
 
 type axis = "x" | "X" | "y" | "Y"
+type PlayerType = "Player" | "Computer"
 
 // Selecting the necessary DOM elements
 let box_Area: HTMLElement | null = document.querySelector(".box_area")
@@ -19,7 +20,7 @@ AxisBtns.forEach((btn) => {
   btn.addEventListener("click", (e) => {
     const target = e.target as HTMLButtonElement // Type assertion
     axisState.currentAxis = (target.value || "X") as axis
-    console.log(`Axis selected: ${axisState.currentAxis}`)
+    // console.log(`Axis selected: ${axisState.currentAxis}`)
   })
 })
 
@@ -55,6 +56,7 @@ function startGame() {
 
 // Function to handle the ship placement process
 function handleShipPlacement() {
+  // Place Ship Or Attack in Bix : TODO
   PlaceShipInBox(realPlayer)
 
   document.addEventListener("shipsPlaced", () => {

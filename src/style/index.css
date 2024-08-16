@@ -29,6 +29,13 @@ header {
   margin: 25px;
   padding: 20px;
 }
+.placeShip_Computer_area {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 25px;
+  padding: 20px;
+}
 .board {
   display: grid;
   grid-template-columns: repeat(10, 1fr);
@@ -168,10 +175,10 @@ header {
   background-color: #bd2130; /* Even darker red for active state */
 }
 
-.place_ship_text {
+/* .place_ship_text {
   text-align: center;
   margin-top: 20px;
-}
+} */
 .ship_Pos_Err {
   background-color: #d95b68;
 }

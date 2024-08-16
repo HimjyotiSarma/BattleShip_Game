@@ -1,4 +1,5 @@
-let allShips: Array<string> = [
+type ShipName = "carrier" | "battleship" | "destroyer" | "submarine" | "patrol"
+let allShips: Array<ShipName> = [
   "carrier",
   "battleship",
   "destroyer",

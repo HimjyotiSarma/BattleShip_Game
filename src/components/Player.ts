@@ -7,6 +7,9 @@ interface Coord {
   y: number
 }
 
+type ShipName = "carrier" | "battleship" | "destroyer" | "submarine" | "patrol"
+type Axis = "X" | "x" | "Y" | "y"
+
 class Player {
   PlayerBoard: GameBoard
 
@@ -22,12 +25,11 @@ class Player {
     return this.PlayerBoard.isAllShipPlaced()
   }
 
-  autoShipPlacement(allShipsArr: Array<string> = [...allShips]) {
+  autoShipPlacement(allShipsArr: Array<ShipName> = [...allShips]) {
     if (allShipsArr.length === 0 || this.PlayerBoard.isAllShipPlaced()) {
       return
     }
 
-    type Axis = "X" | "x" | "Y" | "y"
     const maxAttempts = 1000 // Set a maximum number of attempts to prevent infinite recursion
 
     const placeRandomShip = (attempts = 0) => {
@@ -39,7 +41,7 @@ class Player {
       const secondIndex: number = RandomNumber(1, 8)
       const Axis = ["X", "Y"]
       const randomAxis = Axis[Math.floor(Math.random() * Axis.length)]
-      const currentShip = allShipsArr.length >= 1 ? allShipsArr.shift() : ""
+      const currentShip = allShipsArr.length >= 1 ? allShipsArr.shift() : null
 
       if (currentShip) {
         try {
@@ -61,30 +63,31 @@ class Player {
     placeRandomShip()
     this.autoShipPlacement(allShipsArr)
   }
-  placeShip(shipName: string, coord: Coord, axis: "X" | "x" | "Y" | "y") {
+
+  placeShip(shipName: ShipName, coord: Coord, axis: Axis) {
     if (!this.PlayerBoard.isAllShipPlaced()) {
       return this.PlayerBoard.placeShip(shipName, coord, axis)
     } else {
       console.log("All ships have been placed.")
       document.dispatchEvent(new CustomEvent("shipsPlaced"))
-      throw new Error("All Ships is Placed. Please move to the game scenerio")
+      throw new Error("All Ships are Placed. Please move to the game scenario")
     }
   }
 
   get gameBox() {
     return this.PlayerBoard.gameBox
   }
+
   isGameStarted(): boolean {
-    if (this.PlayerBoard.isAllShipPlaced()) {
-      return true
-    }
-    return false
+    return this.PlayerBoard.isAllShipPlaced()
   }
+
   isGameBoxEmpty(): boolean {
-    if (this.PlayerBoard.Ships.size >= 1) {
-      return false
-    }
-    return true
+    return this.PlayerBoard.Ships.size < 1
+  }
+
+  isShipPlaced(shipName: ShipName): boolean {
+    return this.PlayerBoard.isShipPlaced(shipName)
   }
 }
 
