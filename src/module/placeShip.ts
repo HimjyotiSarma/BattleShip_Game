@@ -33,6 +33,11 @@ function PlaceShipInBox(player = new Player()) {
   const placeNextShip = () => {
     if (allShipsArr.length === 0) {
       console.log("All ships have been placed.")
+      allCells?.forEach((cell) => {
+        cell.replaceWith(cell.cloneNode(true))
+      })
+      const gameStatus = document.querySelector(".gameStatus h3") as HTMLElement
+      gameStatus.textContent = "Game has Started!!!"
       document.dispatchEvent(new CustomEvent("shipsPlaced"))
       return
     }
@@ -66,7 +71,6 @@ function PlaceShipInBox(player = new Player()) {
               placeNextShip() // Proceed to the next ship
             }
           } catch (error) {
-            let isCurrentShipInArr = allShipsArr.includes(currentShip)
             if (
               !allShipsArr.includes(currentShip) &&
               !player.isShipPlaced(currentShip)

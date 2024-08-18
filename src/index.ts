@@ -3,6 +3,7 @@ import Player from "./components/Player"
 import PlaceShipInBox from "./module/placeShip"
 import axisState from "./features/currentAxis"
 import "./style/index.css"
+import RecieveAttack from "./module/attackShip"
 
 type axis = "x" | "X" | "y" | "Y"
 type PlayerType = "Player" | "Computer"
@@ -45,12 +46,14 @@ function startGame() {
     secondary_game_area.append(
       computerBoard.renderBoard(computerPlayer.gameBox),
     )
+    RecieveAttack(realPlayer, computerPlayer)
   }
 
   if (box_Area) {
     box_Area.innerHTML = "" // Clear existing player board
     box_Area.append(playerBoard.renderBoard(realPlayer.gameBox))
   }
+
   console.log("Game started!")
 }
 

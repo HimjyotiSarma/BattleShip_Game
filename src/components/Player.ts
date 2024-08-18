@@ -37,8 +37,8 @@ class Player {
         throw new Error("Max attempts reached for placing ship")
       }
 
-      const firstIndex: number = RandomNumber(1, 8)
-      const secondIndex: number = RandomNumber(1, 8)
+      const firstIndex: number = RandomNumber(0, 9)
+      const secondIndex: number = RandomNumber(0, 9)
       const Axis = ["X", "Y"]
       const randomAxis = Axis[Math.floor(Math.random() * Axis.length)]
       const currentShip = allShipsArr.length >= 1 ? allShipsArr.shift() : null
@@ -72,6 +72,66 @@ class Player {
       document.dispatchEvent(new CustomEvent("shipsPlaced"))
       throw new Error("All Ships are Placed. Please move to the game scenario")
     }
+  }
+  autoRecieveAttack(enemyBoard: GameBoard, lastHitCoord?: Coord | null) {
+    if (lastHitCoord) {
+      let nearbyCoord = this.getNearbyHitCoord(lastHitCoord)
+      if (nearbyCoord) {
+        let attack_status = enemyBoard.receiveAttack(nearbyCoord)
+        if (attack_status == "hit") {
+          return {
+            attack_status: attack_status,
+            lastHitCoord: nearbyCoord,
+            attacked_coord: nearbyCoord,
+          }
+        }
+        return {
+          attack_status: attack_status,
+          lastHitCoord: null,
+          attacked_coord: nearbyCoord,
+        }
+      }
+    }
+    let X_Axis = RandomNumber(0, 9)
+    let Y_Axis = RandomNumber(0, 9)
+    let coord: Coord = { x: X_Axis, y: Y_Axis }
+    let attack_status = enemyBoard.receiveAttack(coord)
+    if (attack_status == "hit") {
+      return {
+        attack_status: attack_status,
+        lastHitCoord: coord,
+        attacked_coord: coord,
+      }
+    } else if (attack_status == "miss") {
+      return {
+        attack_status: attack_status,
+        lastHitCoord: null,
+        attacked_coord: coord,
+      }
+    }
+  }
+  getNearbyHitCoord(coord: Coord) {
+    const { x, y } = coord
+    const directions = [
+      { dx: 0, dy: 1 },
+      { dx: 0, dy: -1 },
+      { dx: 1, dy: 0 },
+      { dx: -1, dy: 0 },
+    ]
+    for (const { dx, dy } of directions) {
+      const newX = x + dx
+      const newY = y + dy
+      if (
+        newX >= 0 &&
+        newX < 10 &&
+        newY >= 0 &&
+        newY < 10 &&
+        this.PlayerBoard.game[newX][newY] == 1
+      ) {
+        return { x: newX, y: newY }
+      }
+    }
+    return null
   }
 
   get gameBox() {

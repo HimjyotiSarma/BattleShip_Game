@@ -16,8 +16,8 @@ const shipNameArea: HTMLElement | null = document.querySelector(
 )
 
 function getClassName(value: cellValue, playerType: PlayerType): string {
-  if (value === 1) return "cell_hit"
-  if (value === -1) return "cell_miss"
+  if (value === 1 || value === "1") return "cell_hit"
+  if (value === -1 || value === "-1") return "cell_miss"
   console.log("Player Type: ", playerType)
   if (typeof value === "string" && playerType == "Player") {
     switch (value) {

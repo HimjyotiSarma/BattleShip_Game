@@ -72,7 +72,7 @@ class GameBoard {
         }
         return "hit"
       }
-    } else if (gridPosition !== 1) {
+    } else if (gridPosition !== 1 && gridPosition !== -1) {
       this.game[coord.x][coord.y] = -1 // Mark as missed
       return "miss"
     }
@@ -154,6 +154,7 @@ class GameBoard {
   }
 
   isLost() {
+    console.log(this.shankedShips)
     return this.shankedShips.length >= 5
   }
 
