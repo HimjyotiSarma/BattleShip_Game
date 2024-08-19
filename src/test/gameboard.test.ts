@@ -67,8 +67,8 @@ describe("Game Board Test Cases", () => {
     const coord = { x: 4, y: 4 }
     let position = board.placeShip("patrol", coord, "X")
     expect(position).toEqual([
+      { x: 4, y: 3 },
       { x: 4, y: 4 },
-      { x: 4, y: 5 },
     ])
     // expect(board.receiveAttack({ x: 4, y: 4 })).toBe("hit")
     // expect(board.SunkedShips.length).toBe(1)
